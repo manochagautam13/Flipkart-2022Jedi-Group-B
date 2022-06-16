@@ -18,9 +18,10 @@ public class PaymentServiceImplementation implements PaymentServiceInterface {
     @Override
     public void payFees(Student student) throws SQLException {
 
-        String sql="select * from registrar where registrar.userId='"+student.getUserId()+"'";
+        // String sql="select * from registrar where registrar.userId=?";
         Connection conn = DBUtils.getConnection();
-        PreparedStatement statement = conn.prepareStatement(sql);
+        PreparedStatement statement = conn.prepareStatement(SQLQueriesConstants.COURSES_OF_STUDENT);
+        statement.setString(1,student.getUserId());
         ResultSet rs = statement.executeQuery();
         int count = 0;
         while(rs.next()) count++;
@@ -30,9 +31,10 @@ public class PaymentServiceImplementation implements PaymentServiceInterface {
             return;
         }
         
-        String sql1="select * from registrar where registered = true and registrar.userId='"+student.getUserId()+"'";
+        // String sql1="select * from registrar where registered = true and registrar.userId=?";
         Connection conn1 = DBUtils.getConnection();
-        PreparedStatement statement1 = conn1.prepareStatement(sql1);
+        PreparedStatement statement1 = conn1.prepareStatement(SQLQueriesConstants.REG_COURSES_OF_STUDENT);
+        statement1.setString(1,student.getUserId());
         ResultSet rs1 = statement1.executeQuery();
         int count1 = 0;
         while(rs1.next()) count1++;

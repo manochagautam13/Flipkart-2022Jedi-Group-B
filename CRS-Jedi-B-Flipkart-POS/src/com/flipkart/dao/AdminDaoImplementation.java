@@ -75,9 +75,12 @@ public class AdminDaoImplementation implements AdminDaoInterface{
         try{
             Connection conn = DBUtils.getConnection();
 
-            String sql = "SELECT * FROM user, admin where userId like '"+adminId+"' and adminId like '"+adminId+"' and user.password like  '"+password+"'";
+            // String sql = "SELECT * FROM user, admin where userId like ? and adminId like ? and user.password like  ?";
 //            String sql = "select * from user where userid="+studentId+" and password="+password;
-            PreparedStatement statement = conn.prepareStatement(sql);
+            PreparedStatement statement = conn.prepareStatement(SQLQueriesConstants.VALIDATE_ADMIN_CREDENTIALS);
+            statement.setString(1,adminId);
+            statement.setString(2,adminId);
+            statement.setString(3,password);
             ResultSet rs = statement.executeQuery();
             if(rs.next())
             return true;
@@ -156,8 +159,8 @@ public class AdminDaoImplementation implements AdminDaoInterface{
                 if(flag==1) {
                     System.out.println("Enter student id");
                     String id = in.next();
-                    String sql1 = "UPDATE student SET isApproved = 1 where studentId = ?";
-                    PreparedStatement statement = con.prepareStatement(sql1);
+                    // String sql1 = "UPDATE student SET isApproved = 1 where studentId = ?";
+                    PreparedStatement statement = con.prepareStatement(SQLQueriesConstants.APPROVE_STUDENT);
                     statement.setString(1,id);
                     statement.executeUpdate();
                     //statement.executeQuery(sql);
@@ -178,8 +181,8 @@ public class AdminDaoImplementation implements AdminDaoInterface{
 
     public boolean isApproved(String studentId) throws Exception{
         Connection con = DBUtils.getConnection();
-        String sql = "select * from student where studentId=? and isApproved = 1";
-        PreparedStatement stmt = con.prepareStatement(sql);
+        // String sql = "select * from student where studentId=? and isApproved = 1";
+        PreparedStatement stmt = con.prepareStatement(SQLQueriesConstants.GET_APPROVED_STUDENTS);
         stmt.setString(1,studentId);
         ResultSet rs =  stmt.executeQuery();
         while(rs.next()) {
@@ -189,9 +192,9 @@ public class AdminDaoImplementation implements AdminDaoInterface{
     }
     public void approveStudents(String studentId) throws Exception {
             String id = studentId;
-            String sql1 = "UPDATE student SET isApproved = 1 where studentId = ?";
+            // String sql1 = "UPDATE student SET isApproved = 1 where studentId = ?";
             Connection con = DBUtils.getConnection();
-            PreparedStatement statement = con.prepareStatement(sql1);
+            PreparedStatement statement = con.prepareStatement(SQLQueriesConstants.APPROVE_STUDENT);
             statement.setString(1,id);
             statement.executeUpdate();
     }
@@ -211,16 +214,16 @@ public class AdminDaoImplementation implements AdminDaoInterface{
 	    	
 	    	Connection con = DBUtils.getConnection();
 	    	
-	    	String getStudents = "select distinct userId from registrar where registered = false";
-	    	PreparedStatement stmt1 = con.prepareStatement(getStudents);
+	    	// String getStudents = "select distinct userId from registrar where registered = false";
+	    	PreparedStatement stmt1 = con.prepareStatement(SQLQueriesConstants.GET_STUDENTS);
 	    	
 	    	ResultSet rs = stmt1.executeQuery();
 	    	
 	    	while(rs.next()) {
 	    		studentId = rs.getString(1);
 	    		
-	    		String checkCourses = "select count(*) from registrar where registered = true and userId = ?";
-	    		stmt1 = con.prepareStatement(checkCourses);
+	    		// String checkCourses = "select count(*) from registrar where registered = true and userId = ?";
+	    		stmt1 = con.prepareStatement(SQLQueriesConstants.CHECK_COURSES);
 	    		stmt1.setString(1, studentId);
 	    		
 	    		ResultSet count = stmt1.executeQuery();
@@ -235,9 +238,9 @@ public class AdminDaoImplementation implements AdminDaoInterface{
 	    	
 	    	for (String student : studentList) {
 	    		
-	    		String getCourseStudent = "select courseId, userId from registrar where registered = false and userId = ?";
+	    		// String getCourseStudent = "select courseId, userId from registrar where registered = false and userId = ?";
 	    		
-	    		stmt1 = con.prepareStatement(getCourseStudent);
+	    		stmt1 = con.prepareStatement(SQLQueriesConstants.GET_COURSES_STUDENT);
 	    		stmt1.setString(1, student);
 	    		
 	    		rs = stmt1.executeQuery();
@@ -271,9 +274,9 @@ public class AdminDaoImplementation implements AdminDaoInterface{
 //	    		System.out.println(scl.s+" "+studentId+" "+scl.c+" "+courseId);
 	    		
 	    		if (scl.s.equals(studentId) && scl.c == courseId) {
-		    		String sql = "update registrar set registered = true where courseId = ? and userId = ?;";
+		    		// String sql = "update registrar set registered = true where courseId = ? and userId = ?;";
 		        	
-		        	PreparedStatement stmt = con.prepareStatement(sql);
+		        	PreparedStatement stmt = con.prepareStatement(SQLQueriesConstants.REGISTER_STUDENT_TO_COURSE);
 		        	stmt.setString(2, studentId);
 		        	stmt.setInt(1, courseId);
 		        	stmt.executeUpdate();
@@ -304,8 +307,8 @@ public class AdminDaoImplementation implements AdminDaoInterface{
 		// TODO Auto-generated method stub
 		ArrayList<Course> courses=new ArrayList<Course>();
         Connection conn = DBUtils.getConnection();
-        String sql = "SELECT * FROM course";
-        PreparedStatement statement = conn.prepareStatement(sql);
+        // String sql = "SELECT * FROM course";
+        PreparedStatement statement = conn.prepareStatement(SQLQueriesConstants.SELECT_COURSE);
         ResultSet rs = statement.executeQuery();
         while(rs.next())
         {

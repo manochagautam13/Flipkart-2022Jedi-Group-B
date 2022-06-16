@@ -10,14 +10,9 @@ import java.sql.SQLException;
 public class PaymentDaoImplementation implements PaymentDaoInterface{
     @Override
     public void insertIntoPayment(String paymentId, String paymentType) throws SQLException {
-        String sql = "INSERT INTO `payment`\n" +
-                "(`paymentType`,\n" +
-                "`paymentId`)\n" +
-                "VALUES\n" +
-                "(?,\n" +
-                "?);\n";
+        // String sql = "INSERT INTO `payment` (`paymentType`,`paymentId`) VALUES(?,?);";
         Connection conn = DBUtils.getConnection();
-        PreparedStatement statement = conn.prepareStatement(sql);
+        PreparedStatement statement = conn.prepareStatement(SQLQueriesConstants.INSERT_INTO_PAYEMNT);
         statement.setString(1,paymentType);
         statement.setString(2,paymentId);
         statement.executeUpdate();
@@ -25,16 +20,9 @@ public class PaymentDaoImplementation implements PaymentDaoInterface{
 
     @Override
     public void insertIntoBookkeeper(String paymentId, String studentId, int semester) throws SQLException {
-        String sql = "INSERT INTO `bookkeeper`\n" +
-                "(`paymentId`,\n" +
-                "`StudentID`,\n" +
-                "`semester`)\n" +
-                "VALUES\n" +
-                "(?,\n" +
-                "?,\n" +
-                "?);\n";
+        // String sql = "INSERT INTO `bookkeeper` (`paymentId`,`StudentID`,`semester`) VALUES(?,?,?);";
         Connection conn = DBUtils.getConnection();
-        PreparedStatement statement = conn.prepareStatement(sql);
+        PreparedStatement statement = conn.prepareStatement(SQLQueriesConstants.INSERT_INTO_BOOKKEEPER);
         statement.setString(1,paymentId);
         statement.setString(2,studentId);
         statement.setInt(3,semester);
@@ -43,12 +31,9 @@ public class PaymentDaoImplementation implements PaymentDaoInterface{
 
     @Override
     public void updateFeeStatus(String studentId) throws SQLException {
-        String sql = "UPDATE `student`\n" +
-                "SET\n" +
-                "`feeStatus` = ?\n" +
-                "WHERE `studentId` = ?;";
+        // String sql = "UPDATE `student` SET `feeStatus` = ? WHERE `studentId` = ?;";
         Connection conn = DBUtils.getConnection();
-        PreparedStatement statement = conn.prepareStatement(sql);
+        PreparedStatement statement = conn.prepareStatement(SQLQueriesConstants.UPDATE_FEE_STATUS);
         statement.setString(1,studentId);
         statement.setString(2,"1");
         statement.executeUpdate();
@@ -57,11 +42,11 @@ public class PaymentDaoImplementation implements PaymentDaoInterface{
 	@Override
 	public boolean checkPaid(String userId, int semester) {
 		// TODO Auto-generated method stub
-		String sql = "select count(*) from bookkeeper where studentId = ? and semester = ?";
+		// String sql = "select count(*) from bookkeeper where studentId = ? and semester = ?";
         Connection conn;
 		try {
 			conn = DBUtils.getConnection();
-			PreparedStatement statement = conn.prepareStatement(sql);
+			PreparedStatement statement = conn.prepareStatement(SQLQueriesConstants.CHECK_PAID);
 	        statement.setString(1,userId);
 	        statement.setInt(2,semester);
 	        ResultSet rs = statement.executeQuery();

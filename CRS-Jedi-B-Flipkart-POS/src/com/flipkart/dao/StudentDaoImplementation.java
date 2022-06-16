@@ -67,11 +67,13 @@ public class StudentDaoImplementation implements StudentDaoInterface {
     @Override
     public Student getStudent(String studentId) throws SQLException {
         Connection conn = DBUtils.getConnection();
-        String sql = "SELECT * FROM student where studentId='"+studentId+"'";
-        PreparedStatement statement = conn.prepareStatement(sql);
+        // String sql = "SELECT * FROM student where studentId=?";
+        PreparedStatement statement = conn.prepareStatement(SQLQueriesConstants.GET_STUDENT);
+        statement.setString(1,studentId)
         ResultSet rs = statement.executeQuery();
-        String sql1 = "SELECT * FROM user where userId='"+studentId+"'";
-        PreparedStatement statement1 = conn.prepareStatement(sql1);
+        // String sql1 = "SELECT * FROM user where userId=?";
+        PreparedStatement statement1 = conn.prepareStatement(SQLQueriesConstants.GET_USER);
+        statement1.setString(1,studentId)
         ResultSet rs1 = statement1.executeQuery();
         while(rs.next()&& rs1.next())
         {
@@ -84,8 +86,8 @@ public class StudentDaoImplementation implements StudentDaoInterface {
     public Student validateCredentials(String studentId, String password){
         try{
             Connection conn = DBUtils.getConnection();
-            String sql = "SELECT * FROM user where userid = ? and password = ?";
-            PreparedStatement statement = conn.prepareStatement(sql);
+            // String sql = "SELECT * FROM user where userid = ? and password = ?";
+            PreparedStatement statement = conn.prepareStatement(SQLQueriesConstants.VALIDATE_CRED);
             statement.setString(1,studentId);
             statement.setString(2,password);
             ResultSet rs = statement.executeQuery();
@@ -104,17 +106,19 @@ public class StudentDaoImplementation implements StudentDaoInterface {
     @Override
     public String getfeeStatus(String studentId) throws SQLException {
         Connection conn = DBUtils.getConnection();
-        String sql = "SELECT paymentId FROM bookkeeper where studentId='"+studentId+"'";
-        PreparedStatement statement = conn.prepareStatement(sql);
+        // String sql = "SELECT paymentId FROM bookkeeper where studentId=?";
+        PreparedStatement statement = conn.prepareStatement(SQLQueriesConstants.GET_FEE_STATUS);
+        statement.setString(1,studentId)
         ResultSet rs = statement.executeQuery();
         while(rs.next())
         {String x = "Fees Paid";
             return x;
         }
         
-        sql="select * from registrar where registrar.userId='"+studentId+"'";
+        // sql="select * from registrar where registrar.userId=?";
         
-        statement = conn.prepareStatement(sql);
+        statement = conn.prepareStatement(SQLQueriesConstants.COURSES_OF_STUDENT);
+        statement.setString(1,studentId)
         rs = statement.executeQuery();
         int count = 0;
         while(rs.next()) count++;
@@ -124,9 +128,10 @@ public class StudentDaoImplementation implements StudentDaoInterface {
             
         }
         
-        String sql1="select * from registrar where registered = true and registrar.userId='"+studentId+"'";
+        // String sql1="select * from registrar where registered = true and registrar.userId=?";
         Connection conn1 = DBUtils.getConnection();
-        PreparedStatement statement1 = conn1.prepareStatement(sql1);
+        PreparedStatement statement1 = conn1.prepareStatement(SQLQueriesConstants.REG_COURSES_OF_STUDENT);
+        statement1.setString(1,studentId)
         ResultSet rs1 = statement1.executeQuery();
         int count1 = 0;
         while(rs1.next()) count1++;
@@ -160,7 +165,8 @@ public class StudentDaoImplementation implements StudentDaoInterface {
         try{
             for(Integer course:courses) {
             	
-            	PreparedStatement preparedStatement1 = connection.prepareStatement("select courseId from professorreg where courseId = '"+course+"'");
+            	PreparedStatement preparedStatement1 = connection.prepareStatement(SQLQueriesConstants.SELECT_COURSEID);
+                preparedStatement.setInt(1, course);
             	ResultSet flag = preparedStatement1.executeQuery();
             	if (flag.next() == false) {
             		System.out.println(course);
@@ -188,8 +194,8 @@ public class StudentDaoImplementation implements StudentDaoInterface {
     public ArrayList<Course> viewCourses() throws SQLException {
         ArrayList<Course> courses=new ArrayList<Course>();
         Connection conn = DBUtils.getConnection();
-        String sql = "SELECT * FROM course";
-        PreparedStatement statement = conn.prepareStatement(sql);
+        // String sql = "SELECT * FROM course";
+        PreparedStatement statement = conn.prepareStatement(SQLQueriesConstants.SELECT_COURSE);
         ResultSet rs = statement.executeQuery();
         while(rs.next())
         {
@@ -205,8 +211,9 @@ public class StudentDaoImplementation implements StudentDaoInterface {
     public Course viewCourse(int courseId) throws SQLException {
         ArrayList<Course> courses=new ArrayList<Course>();
         Connection conn = DBUtils.getConnection();
-        String sql = "SELECT * FROM course where courseId="+courseId;
-        PreparedStatement statement = conn.prepareStatement(sql);
+        // String sql = "SELECT * FROM course where courseId=?";
+        PreparedStatement statement = conn.prepareStatement(SQLQueriesConstants.COURSE_DETAILS);
+        statement.setInt(1,courseId)
         ResultSet rs = statement.executeQuery();
         while(rs.next())
         {
@@ -236,8 +243,8 @@ public class StudentDaoImplementation implements StudentDaoInterface {
     public ArrayList<GradeCard> viewGrades(String studentId) throws SQLException {
     ArrayList<GradeCard> gradeCards=new ArrayList<>();
         Connection conn = DBUtils.getConnection();
-        String sql = "SELECT * FROM registrar where userId=? and grade between 'A' and 'F'";
-        PreparedStatement statement = conn.prepareStatement(sql);
+        // String sql = "SELECT * FROM registrar where userId=? and grade between 'A' and 'F'";
+        PreparedStatement statement = conn.prepareStatement(SQLQueriesConstants.VIEW_GRADES);
         statement.setString(1, studentId);
         ResultSet rs = statement.executeQuery();
         
