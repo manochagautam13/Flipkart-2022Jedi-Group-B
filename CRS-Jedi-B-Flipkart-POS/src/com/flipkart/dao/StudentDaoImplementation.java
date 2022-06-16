@@ -64,35 +64,6 @@ public class StudentDaoImplementation implements StudentDaoInterface {
         return null;
     }
 
-//    public void addStudent(Student student) throws Exception {
-//        Connection connection = DBUtils.getConnection();
-//        try {
-//            PreparedStatement preparedStatement = connection.prepareStatement(SQLQueriesConstants.ADD_USER_QUERY);
-//            preparedStatement.setString(1, student.getUserId());
-//            preparedStatement.setString(2, student.getPassword());
-//            preparedStatement.setString(3, student.getUserName());
-//            preparedStatement.setString(4, student.getEmailId());
-//            preparedStatement.setString(5, student.getContactNo());
-//
-//            int rows = preparedStatement.executeUpdate();
-//
-//            PreparedStatement preparedStatement1 = connection.prepareStatement(SQLQueriesConstants.ADD_STUDENT_QUERY);
-//            preparedStatement1.setString(1, student.getUserId());
-//            preparedStatement1.setInt(2, student.getSemester());
-//            preparedStatement1.setString(3, " NA ");
-//            preparedStatement1.setInt(4, 0);
-//            preparedStatement1.setInt(5, 0);
-//            int rowsAffected1 = preparedStatement1.executeUpdate();
-//            if (rowsAffected1 == 1 && rows == 1) {
-////                logger.info("Student is registered");
-//            }
-//        }
-//        catch(SQLException e)
-//        {
-////            logger.info("Student with the ID exists. Try Again!!");
-//        }
-//    }
-
     @Override
     public Student getStudent(String studentId) throws SQLException {
         Connection conn = DBUtils.getConnection();
@@ -140,6 +111,31 @@ public class StudentDaoImplementation implements StudentDaoInterface {
         {String x = "Fees Paid";
             return x;
         }
+        
+        sql="select * from registrar where registrar.userId='"+studentId+"'";
+        
+        statement = conn.prepareStatement(sql);
+        rs = statement.executeQuery();
+        int count = 0;
+        while(rs.next()) count++;
+
+        if(count < 4) {
+            return "You have not registered enough number of courses";
+            
+        }
+        
+        String sql1="select * from registrar where registered = true and registrar.userId='"+studentId+"'";
+        Connection conn1 = DBUtils.getConnection();
+        PreparedStatement statement1 = conn1.prepareStatement(sql1);
+        ResultSet rs1 = statement1.executeQuery();
+        int count1 = 0;
+        while(rs1.next()) count1++;
+        
+        if (count1 < 4) {
+        	return "Try paying fee after the registeration process ends!";
+        	
+        }
+        
         return "Fees not paid";
     }
 
@@ -240,14 +236,23 @@ public class StudentDaoImplementation implements StudentDaoInterface {
     public ArrayList<GradeCard> viewGrades(String studentId) throws SQLException {
     ArrayList<GradeCard> gradeCards=new ArrayList<>();
         Connection conn = DBUtils.getConnection();
-        String sql = "SELECT * FROM registrar where userId='"+studentId+"'";
+        String sql = "SELECT * FROM registrar where userId=? and grade between 'A' and 'F'";
         PreparedStatement statement = conn.prepareStatement(sql);
+        statement.setString(1, studentId);
         ResultSet rs = statement.executeQuery();
+        
+        int cnt = 0;
+        
         while(rs.next())
         {
+        	cnt++;
+        	
             GradeCard g=new GradeCard(rs.getString(1), rs.getInt(2),rs.getString(3));
             gradeCards.add(g);
         }
+        
+        if (cnt!=4) return null;
+        
         return gradeCards;
     }
 }

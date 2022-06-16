@@ -42,7 +42,11 @@ public class GeneralLoginDaoImplementation implements GeneralLoginDaoInterface{
                 ResultSet rows = preparedStatement.executeQuery();
 
                 if (rows.next()) {
-                	return rows.getInt(1);
+                	String type = rows.getString(1);
+                	if (type.equals("Student")) return 1;
+                	if (type.equals("Professor")) return 2;
+                	if (type.equals("Admin")) return 3;
+                	return 0;
                 }
                 else {
                 	return 0;

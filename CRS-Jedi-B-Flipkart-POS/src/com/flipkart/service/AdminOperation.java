@@ -1,5 +1,7 @@
 package com.flipkart.service;
 
+import java.util.ArrayList;
+
 import com.flipkart.bean.Course;
 import com.flipkart.bean.Professor;
 import com.flipkart.dao.AdminDaoImplementation;
@@ -87,6 +89,24 @@ public class AdminOperation implements AdminInterface {
     		System.out.println(e);
     	}
     }
+
+	@Override
+	public Boolean viewCourses() throws Exception {
+		// TODO Auto-generated method stub
+		AdminDaoImplementation adminDaoImplementation = new AdminDaoImplementation();
+		
+		ArrayList<Course> courses = adminDaoImplementation.viewCourses();
+		
+		if (courses.size() == 0) {
+			System.out.println("No Courses To Show!!");
+			return false;
+		}
+		System.out.println("Course IDs - Course Names");
+		for (Course c: courses) {
+			System.out.println(c.getCourseId()+" - "+c.getCourseName());
+		}
+		return true;
+	}
 
 //    @Override
 //    public void generateReportCard(String studentId) {

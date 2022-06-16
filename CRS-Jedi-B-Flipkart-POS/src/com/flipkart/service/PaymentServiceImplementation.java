@@ -41,13 +41,22 @@ public class PaymentServiceImplementation implements PaymentServiceInterface {
         	System.out.println("Try paying fee after the registeration process ends!");
         	return;
         }
+        
+        PaymentDaoInterface pdi = new PaymentDaoImplementation();
+        
+        boolean checkPaid = pdi.checkPaid(student.getUserId(),student.getSemester());
+        if (checkPaid) {
+        	System.out.println("Already Paid!!");
+        	return;
+        }
+        System.out.println("Pay Fee");
 
         System.out.println("Select The payment Type");
         System.out.println("1. " + PaymentConstants.UPI_STRING);
         System.out.println("2. " + PaymentConstants.CARD_PAYMENT_STRING);
         Scanner s = new Scanner(System.in);
         int pType = s.nextInt();
-        PaymentDaoInterface pdi = new PaymentDaoImplementation();
+        
         if(pType == 1) {
             String paymentId = this.getRandomString();
             pdi.insertIntoPayment(paymentId,PaymentConstants.UPI_STRING);

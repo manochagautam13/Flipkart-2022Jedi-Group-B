@@ -39,7 +39,11 @@ public class StudentOperations implements StudentInterface {
     @Override
     public void registeredCourseList(String studentId) throws SQLException {
       ArrayList<Integer> courses= studentDaoImplementation.registeredCoursesList(studentId);
-      value = courses.size();
+      if (courses.size() == 0) {
+    	  System.out.println("Registeration Process is not Complete for any Course!!");
+    	  return;
+      }
+      System.out.println("You are Registered to following Courses :");
       for(Integer c:courses)
       {
           Course course=studentDaoImplementation.viewCourse(c);
@@ -72,6 +76,12 @@ public class StudentOperations implements StudentInterface {
             courses.add(new pair(courseId,name,professorId));
         }
         
+        if (courses.size() == 0) {
+        	System.out.println("No Courses Available!!");
+        	return;
+        }
+        System.out.println("Register for the courses");
+
         System.out.println("CourseId-CourseName-ProfessorId");
         for(pair p:courses)
             System.out.println(p.course+"\t-\t"+p.name+"\t-\t"+p.prof);
@@ -112,6 +122,13 @@ public class StudentOperations implements StudentInterface {
     @Override
     public void viewGradeCard(String studentId) throws SQLException {
      ArrayList<GradeCard> gradeCards=studentDaoImplementation.viewGrades(studentId);
+     
+     if (gradeCards == null) {
+    	 System.out.println("Grade Card Not Generated Yet!!");
+    	 return;
+     }
+     System.out.println("Student Report Card");
+
      for(GradeCard g:gradeCards)
      {
          System.out.println(studentDaoImplementation.viewCourse(g.getCourseId()).getCourseName()+"-"+g.getGrade());

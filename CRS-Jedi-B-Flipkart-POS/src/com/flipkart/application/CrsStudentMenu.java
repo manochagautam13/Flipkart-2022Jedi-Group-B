@@ -32,22 +32,26 @@ public class CrsStudentMenu {
                         System.out.println("");
                         break;
                     case 2:
-                        System.out.println("List of Courses Available");
+                        
                         ArrayList<Course> courses= (ArrayList<Course>) studentOperations.viewCourses();
+                        
+                        if (courses.size() == 0) {
+                        	System.out.println("No Courses To Show!!");
+                        	break;
+                        }
+                        
+                        System.out.println("List of Courses Available");
                         System.out.println("CourseId-CourseName");
                         for(Course c:courses)
                             System.out.println(c.getCourseId()+"\t-\t"+c.getCourseName());
                         break;
                     case 3:
-                        System.out.println("Register for the courses");
                         studentOperations.registerCourses(student.getUserId());
                         break;
                     case 4:
-                        System.out.println("Student Report Card");
                         studentOperations.viewGradeCard(student.getUserId());
                         break;
                     case 5:
-                        System.out.println("Pay Fee");
                         PaymentServiceInterface psi = new PaymentServiceImplementation();
                         psi.payFees(student);
                         break;
@@ -56,7 +60,6 @@ public class CrsStudentMenu {
                         System.out.println(studentDaoImplementation.getfeeStatus(student.getUserId()));
                         break;
                     case 7:
-                        System.out.println("You are Registered to following Courses :");
                         studentOperations.registeredCourseList(student.getUserId());
                         break;
                     case 8:

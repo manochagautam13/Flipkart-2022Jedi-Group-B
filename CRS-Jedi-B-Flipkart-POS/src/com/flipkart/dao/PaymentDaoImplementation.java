@@ -4,6 +4,7 @@ import com.flipkart.utils.DBUtils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class PaymentDaoImplementation implements PaymentDaoInterface{
@@ -52,4 +53,33 @@ public class PaymentDaoImplementation implements PaymentDaoInterface{
         statement.setString(2,"1");
         statement.executeUpdate();
     }
+
+	@Override
+	public boolean checkPaid(String userId, int semester) {
+		// TODO Auto-generated method stub
+		String sql = "select count(*) from bookkeeper where studentId = ? and semester = ?";
+        Connection conn;
+		try {
+			conn = DBUtils.getConnection();
+			PreparedStatement statement = conn.prepareStatement(sql);
+	        statement.setString(1,userId);
+	        statement.setInt(2,semester);
+	        ResultSet rs = statement.executeQuery();
+	        
+	        if (rs.next()) {
+	        	if (rs.getInt(1) == 0) {
+	        		return false;
+	        	}
+	        }
+	        
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return true;
+		}
+        
+        
+        
+		return true;
+	}
 }

@@ -27,18 +27,25 @@ public class CrsProfessorMenu {
                     break;
                 case 2:
                     ArrayList<Course> courses= profServ.viewAllCourses();
-                    System.out.println("CourseId-CourseName");
+                    if (courses.size()>0)System.out.println("CourseId-CourseName");
+                    else System.out.println("No Courses To Show!!");
                     for(Course c:courses)
                         System.out.println(c.getCourseId()+"\t-\t"+c.getCourseName());
                     break;
                 case 3:
-                    System.out.println("Register for the courses");
+                    
                     profServ.registerCourses(professor);
                     break;
                 case 4:
-                    System.out.println("View enrolled students in each course");
+                    
                     Map<String,ArrayList<String>> courseWithStudents=profServ.viewEnrolledStudents(professor);
                     int courseindex=1;
+                    
+                    if (courseWithStudents.size()==0) {
+                    	System.out.println("No Students Enrolled!!");
+                    	break;
+                    }
+                    System.out.println("View enrolled students in each course");
                     for(String CourseName:courseWithStudents.keySet()){
                         System.out.println(courseindex+". "+"("+CourseName+")");
                         int studentsIndex=1;
@@ -50,7 +57,7 @@ public class CrsProfessorMenu {
                     }
                     break;
                 case 5:
-                    System.out.println("Make a report card for a student");
+                    
                     profServ.assignGrades(professor);
                     break;
                 case 6:

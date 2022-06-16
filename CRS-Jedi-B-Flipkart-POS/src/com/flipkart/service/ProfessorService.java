@@ -28,6 +28,12 @@ public class ProfessorService implements ProfessorServiceInterface {
     }
     public void assignGrades(Professor professor) throws SQLException, IOException {
         Map<String,ArrayList<String>> courseWithStudents=profOp.viewEnrolledStudentsWithDB(professor);
+        
+        if (courseWithStudents.size() == 0) {
+        	System.out.println("Not Applicable!!");
+        	return;
+        }
+        System.out.println("Make a report card for a student");
         System.out.println("Enter the Course Index and Students index ");
         int courseindex=1;
         for(String CourseName:courseWithStudents.keySet()){
@@ -51,16 +57,25 @@ public class ProfessorService implements ProfessorServiceInterface {
 
     }
     public void registerCourses(Professor professor) throws SQLException, IOException {
+    	
+    	
+    	
     	while(true) {
     		ArrayList<Course> courses=profOp.viewAvailableCoursesWithDB(professor);
-        
-            System.out.println("---Enter the Index which you want to register(Enter 0 to exit)");
-            System.out.println("Index." +"CourseName-CourseId");
+    		
             int index=1;
             for (Course c : courses) {
                 System.out.println(index+".\t ("+c.getCourseId() + "\t-\t" + c.getCourseName()+")");
                 index++;
             }
+            
+            if (courses.size() == 0) {
+            	System.out.println("No Courses To Register!!");
+            	return;
+            }
+            System.out.println("Register for the courses");
+            System.out.println("---Enter the Index which you want to register(Enter 0 to exit)");
+            System.out.println("Index." +"CourseName-CourseId");
 
             int choice=Integer.parseInt(br.readLine());
             if(choice==0){

@@ -11,4 +11,5 @@ public interface PaymentDaoInterface {
     void insertIntoPayment(String paymentId, String paymentType) throws SQLException;
     void insertIntoBookkeeper(String paymentId, String paymentType, int semester) throws SQLException;
     void updateFeeStatus(String studentId) throws SQLException;
+	boolean checkPaid(String userId, int semester);
 }

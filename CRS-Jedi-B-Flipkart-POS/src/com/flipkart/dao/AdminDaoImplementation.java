@@ -99,8 +99,8 @@ public class AdminDaoImplementation implements AdminDaoInterface{
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
             ok = false;
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            System.out.println("The Course Id already exists!");
+//            e.printStackTrace();
         }
         return ok;
     }
@@ -113,7 +113,15 @@ public class AdminDaoImplementation implements AdminDaoInterface{
             Statement stmt = con.createStatement();
             if(con==null)System.out.println("connection not established");
             String sql = "DELETE FROM course WHERE courseId= " + courseId;
-            stmt.executeUpdate(sql);
+            int rs = stmt.executeUpdate(sql);
+            
+            if (rs == 0) {
+            	
+        		System.out.println("No Such Course Exists!!");
+        		ok = false;
+        	
+            }
+            
         } catch (SQLException e) {
             ok = false;
             //System.out.println(e.getMessage());
@@ -291,4 +299,21 @@ public class AdminDaoImplementation implements AdminDaoInterface{
 //    public ArrayList<Grade> fetchGrade(int userId) {
 //        return null;
 //    }
+	@Override
+	public ArrayList<Course> viewCourses() throws SQLException {
+		// TODO Auto-generated method stub
+		ArrayList<Course> courses=new ArrayList<Course>();
+        Connection conn = DBUtils.getConnection();
+        String sql = "SELECT * FROM course";
+        PreparedStatement statement = conn.prepareStatement(sql);
+        ResultSet rs = statement.executeQuery();
+        while(rs.next())
+        {
+          Course course=new Course();
+          course.setCourseId(rs.getInt(1));
+          course.setCourseName(rs.getString(2));
+          courses.add(course);
+        }
+        return courses;
+	}
 }
