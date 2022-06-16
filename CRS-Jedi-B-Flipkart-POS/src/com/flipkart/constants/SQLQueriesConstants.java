@@ -32,7 +32,7 @@ public class SQLQueriesConstants {
     public static final String GET_USER = "SELECT * FROM user where userId=?";
     public static final String VALIDATE_CRED = "SELECT * FROM user where userid = ? and password = ?";
     public static final String GET_FEE_STATUS = "SELECT paymentId FROM bookkeeper where studentId=?";
-    public static final String SELECT_COURSEID = "select courseId from professorreg where courseId = ?"
+    public static final String SELECT_COURSEID = "select courseId from professorreg where courseId = ?";
     public static final String COURSE_DETAILS = "SELECT * FROM course where courseId=?";
-    public static final String VIEW_GRADES = "SELECT * FROM registrar where userId=? and grade between 'A' and 'F'";
+	public static final String VIEW_GRADES = "SELECT * FROM registrar where userId=? and grade between 'A' and 'F'";
 }

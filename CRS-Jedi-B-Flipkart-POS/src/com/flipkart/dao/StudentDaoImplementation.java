@@ -69,11 +69,11 @@ public class StudentDaoImplementation implements StudentDaoInterface {
         Connection conn = DBUtils.getConnection();
         // String sql = "SELECT * FROM student where studentId=?";
         PreparedStatement statement = conn.prepareStatement(SQLQueriesConstants.GET_STUDENT);
-        statement.setString(1,studentId)
+        statement.setString(1,studentId);
         ResultSet rs = statement.executeQuery();
         // String sql1 = "SELECT * FROM user where userId=?";
         PreparedStatement statement1 = conn.prepareStatement(SQLQueriesConstants.GET_USER);
-        statement1.setString(1,studentId)
+        statement1.setString(1,studentId);
         ResultSet rs1 = statement1.executeQuery();
         while(rs.next()&& rs1.next())
         {
@@ -108,7 +108,7 @@ public class StudentDaoImplementation implements StudentDaoInterface {
         Connection conn = DBUtils.getConnection();
         // String sql = "SELECT paymentId FROM bookkeeper where studentId=?";
         PreparedStatement statement = conn.prepareStatement(SQLQueriesConstants.GET_FEE_STATUS);
-        statement.setString(1,studentId)
+        statement.setString(1,studentId);
         ResultSet rs = statement.executeQuery();
         while(rs.next())
         {String x = "Fees Paid";
@@ -118,7 +118,7 @@ public class StudentDaoImplementation implements StudentDaoInterface {
         // sql="select * from registrar where registrar.userId=?";
         
         statement = conn.prepareStatement(SQLQueriesConstants.COURSES_OF_STUDENT);
-        statement.setString(1,studentId)
+        statement.setString(1,studentId);
         rs = statement.executeQuery();
         int count = 0;
         while(rs.next()) count++;
@@ -131,7 +131,7 @@ public class StudentDaoImplementation implements StudentDaoInterface {
         // String sql1="select * from registrar where registered = true and registrar.userId=?";
         Connection conn1 = DBUtils.getConnection();
         PreparedStatement statement1 = conn1.prepareStatement(SQLQueriesConstants.REG_COURSES_OF_STUDENT);
-        statement1.setString(1,studentId)
+        statement1.setString(1,studentId);
         ResultSet rs1 = statement1.executeQuery();
         int count1 = 0;
         while(rs1.next()) count1++;
@@ -166,7 +166,7 @@ public class StudentDaoImplementation implements StudentDaoInterface {
             for(Integer course:courses) {
             	
             	PreparedStatement preparedStatement1 = connection.prepareStatement(SQLQueriesConstants.SELECT_COURSEID);
-                preparedStatement.setInt(1, course);
+                preparedStatement1.setInt(1, course);
             	ResultSet flag = preparedStatement1.executeQuery();
             	if (flag.next() == false) {
             		System.out.println(course);
@@ -213,7 +213,7 @@ public class StudentDaoImplementation implements StudentDaoInterface {
         Connection conn = DBUtils.getConnection();
         // String sql = "SELECT * FROM course where courseId=?";
         PreparedStatement statement = conn.prepareStatement(SQLQueriesConstants.COURSE_DETAILS);
-        statement.setInt(1,courseId)
+        statement.setInt(1,courseId);
         ResultSet rs = statement.executeQuery();
         while(rs.next())
         {

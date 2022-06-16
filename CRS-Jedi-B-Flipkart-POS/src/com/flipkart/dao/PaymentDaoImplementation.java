@@ -1,5 +1,6 @@
 package com.flipkart.dao;
 
+import com.flipkart.constants.SQLQueriesConstants;
 import com.flipkart.utils.DBUtils;
 
 import java.sql.Connection;

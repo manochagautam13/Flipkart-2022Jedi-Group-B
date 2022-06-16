@@ -3,6 +3,7 @@ package com.flipkart.dao;
 import com.flipkart.bean.Course;
 import com.flipkart.bean.Professor;
 import com.flipkart.bean.Student;
+import com.flipkart.constants.SQLQueriesConstants;
 import com.flipkart.utils.*;
 import java.sql.*;
 import java.util.ArrayList;
@@ -39,12 +40,11 @@ public class ProfessorOperations implements ProfessorUtilsInterface {
 
         long id = 0;
         //inserting into table
-        try (
-                PreparedStatement pstmt = con.prepareStatement(SQLQueriesConstants.PROVIDE_GRADE, Statement.RETURN_GENERATED_KEYS)
-                statement.setString(1,Grade);
-                statement.setString(2,studentId);
-                statement.setInt(3,courseId);
-                ) {
+        try {
+                PreparedStatement pstmt = con.prepareStatement(SQLQueriesConstants.PROVIDE_GRADE, Statement.RETURN_GENERATED_KEYS);
+                pstmt.setString(1,Grade);
+                pstmt.setString(2,studentId);
+                pstmt.setInt(3,courseId);
 
             int affectedRows = pstmt.executeUpdate();
             // check the affected rows

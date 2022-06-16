@@ -2,6 +2,7 @@ package com.flipkart.service;
 
 import com.flipkart.bean.Student;
 import com.flipkart.constants.PaymentConstants;
+import com.flipkart.constants.SQLQueriesConstants;
 import com.flipkart.dao.PaymentDaoImplementation;
 import com.flipkart.dao.PaymentDaoInterface;
 import com.flipkart.service.PaymentServiceInterface;
