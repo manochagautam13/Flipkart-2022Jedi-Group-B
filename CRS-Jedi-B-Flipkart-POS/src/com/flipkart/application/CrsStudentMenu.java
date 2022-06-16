@@ -13,8 +13,19 @@ import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+
+/*
+ * Student Menu
+ */
+
 public class CrsStudentMenu {
 
+        /*
+         * Shows Student Menu and input choices
+         * @param student
+         * @throws SQLException
+         * @throws CourseAlreadyRegisteredException
+         */
         public void studentMenu(Student student) throws IOException, SQLException, CourseAlreadyRegisteredException {
             while(true) {
                 System.out.println("");

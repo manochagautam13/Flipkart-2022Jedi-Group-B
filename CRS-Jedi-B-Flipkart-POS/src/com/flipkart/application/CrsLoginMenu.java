@@ -14,6 +14,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
 
+/*
+ * Login Menu
+ * @throws UserNotFound Exception
+ * @throws CourseAlreadyRegistered Exception
+ */
 public class CrsLoginMenu {
 
 	public void crsLoginMenu() throws IOException, SQLException, UserNotFoundException, CourseAlreadyRegisteredException {

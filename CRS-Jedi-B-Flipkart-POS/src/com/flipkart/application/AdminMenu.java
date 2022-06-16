@@ -7,9 +7,15 @@ import com.flipkart.service.AdminOperation;
 
 import java.util.Scanner;
 
-
+/*
+    Menu for Admin
+*/
 
 public class AdminMenu {
+    /*
+     * displays admin menu
+     * take choice input
+     */
     public void adminMenu(){
 
         int choice;

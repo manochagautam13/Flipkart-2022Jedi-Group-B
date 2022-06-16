@@ -11,8 +11,19 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
 
+/*
+ * Proff Menu
+ */
+
 public class CrsProfessorMenu {
     ProfessorService profServ=new ProfessorService();
+
+    /* Shows Professor menu
+     * @param professor
+     * @throws IOException
+     * @throws SQLException
+     */
+
     public void professorMenu(Professor professor) throws IOException, SQLException {
         while(true) {
             System.out.println("---Professor Menu-----");

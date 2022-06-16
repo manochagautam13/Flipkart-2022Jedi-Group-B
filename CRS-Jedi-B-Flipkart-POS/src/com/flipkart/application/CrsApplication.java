@@ -11,7 +11,12 @@ import java.lang.*;
 import java.io.*;
 import java.sql.SQLException;
 import java.util.*;
-
+/*
+ * main application startup file
+ * @throws SQL exception
+ * @throws UserNotFound exception
+ * @throws CourseAlreadyRegister exception
+ */
 public class CrsApplication {
     public static void main(String[] args) throws IOException, SQLException, UserNotFoundException, CourseAlreadyRegisteredException {
 //        final Logger logger = Logger.getLogger(CrsApplication.class);

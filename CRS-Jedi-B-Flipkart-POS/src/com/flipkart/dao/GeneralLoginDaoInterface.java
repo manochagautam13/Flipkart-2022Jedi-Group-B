@@ -8,7 +8,11 @@ package com.flipkart.dao;
  *
  */
 public interface GeneralLoginDaoInterface {
-
+	/*
+	 * get type of user
+	 * @param userId
+	 * @return
+	 */
 	int getUserType(String userId);
 	
 }

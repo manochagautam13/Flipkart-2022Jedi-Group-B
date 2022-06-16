@@ -11,11 +11,45 @@ public interface AdminDaoInterface {
     default boolean addProfessor(Professor professor) {
         return false;
     }
+
+    /*
+     * add course to DB using SQL commands
+     * @param course
+     * @return status true or false
+     */
     boolean addCourse(Course course);
+
+    /*
+     * dropCourse using SQL commands from DB
+     * @param courseId
+     * @return
+     */
     boolean dropCourse(int courseId);
+
+    /*
+     * approve students from DB using SQL commands
+     * @return
+     */
     boolean approveStudents();
+
+    /*
+     * validate credentials from DB using SQL commands
+     * @param adminId
+     * @param password
+     * @return
+     */
     boolean validateCredentials(String adminId, String password);
+    /*
+     *
+     * @throws Exception
+     */
     void registerCourse() throws Exception;
+
+    /*
+     * pull courses from DB
+     * @return list of courses
+     * @throws SQLException
+     */
     ArrayList<Course> viewCourses() throws SQLException;
 
 //    ArrayList<Grade> fetchGrade(int userId);
