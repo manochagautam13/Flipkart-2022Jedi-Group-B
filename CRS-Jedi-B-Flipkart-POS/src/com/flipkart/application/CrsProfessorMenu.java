@@ -29,8 +29,9 @@ public class CrsProfessorMenu {
                     ArrayList<Course> courses= profServ.viewAllCourses();
                     if (courses.size()>0)System.out.println("CourseId-CourseName");
                     else System.out.println("No Courses To Show!!");
-                    for(Course c:courses)
-                        System.out.println(c.getCourseId()+"\t-\t"+c.getCourseName());
+                    courses.forEach(System.out::println);
+//                    for(Course c:courses)
+//                        System.out.println(c.getCourseId()+"\t-\t"+c.getCourseName());
                     break;
                 case 3:
                     

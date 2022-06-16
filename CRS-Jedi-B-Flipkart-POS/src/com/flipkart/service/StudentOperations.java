@@ -44,11 +44,19 @@ public class StudentOperations implements StudentInterface {
     	  return;
       }
       System.out.println("You are Registered to following Courses :");
-      for(Integer c:courses)
-      {
-          Course course=studentDaoImplementation.viewCourse(c);
-        System.out.println(c+"-"+course.getCourseName());
-      }
+      
+      courses.forEach((c)->{try {
+		System.out.println(c+"-"+studentDaoImplementation.viewCourse(c).getCourseName());
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}});
+      
+//      for(Integer c:courses)
+//      {
+//          Course course=studentDaoImplementation.viewCourse(c);
+//        System.out.println(c+"-"+course.getCourseName());
+//      }
     }
 
     @Override

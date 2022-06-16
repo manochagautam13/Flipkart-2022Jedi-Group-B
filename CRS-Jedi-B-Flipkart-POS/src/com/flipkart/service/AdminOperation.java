@@ -102,9 +102,10 @@ public class AdminOperation implements AdminInterface {
 			return false;
 		}
 		System.out.println("Course IDs - Course Names");
-		for (Course c: courses) {
-			System.out.println(c.getCourseId()+" - "+c.getCourseName());
-		}
+//		for (Course c: courses) {
+//			System.out.println(c.getCourseId()+" - "+c.getCourseName());
+//		}
+		courses.forEach(System.out::println);
 		return true;
 	}
 

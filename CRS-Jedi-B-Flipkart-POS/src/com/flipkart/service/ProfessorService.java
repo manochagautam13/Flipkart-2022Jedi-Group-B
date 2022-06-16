@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 public class ProfessorService implements ProfessorServiceInterface {
     BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
@@ -56,23 +57,25 @@ public class ProfessorService implements ProfessorServiceInterface {
 
 
     }
+ 
     public void registerCourses(Professor professor) throws SQLException, IOException {
     	
     	
     	
     	while(true) {
     		ArrayList<Course> courses=profOp.viewAvailableCoursesWithDB(professor);
-    		
-            int index=1;
-            for (Course c : courses) {
-                System.out.println(index+".\t ("+c.getCourseId() + "\t-\t" + c.getCourseName()+")");
-                index++;
-            }
-            
-            if (courses.size() == 0) {
+    		if (courses.size() == 0) {
             	System.out.println("No Courses To Register!!");
             	return;
             }
+//            int index=1;
+//            for (Course c : courses) {
+//                System.out.println(index+".\t ("+c.getCourseId() + "\t-\t" + c.getCourseName()+")");
+//                index++;
+//            }
+            
+            IntStream.range(0, courses.size()).forEach(index->System.out.println((index+1)+".\t"+courses.get(index)));
+            
             System.out.println("Register for the courses");
             System.out.println("---Enter the Index which you want to register(Enter 0 to exit)");
             System.out.println("Index." +"CourseName-CourseId");

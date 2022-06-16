@@ -14,6 +14,10 @@ public class Course {
      * @param courseId
      * @param courseName
      */
+    public String toString() {
+    	return courseId+"\t-\t"+courseName;
+    }
+    
     public Course(int courseId, String courseName) {
         this.courseId = courseId;
         this.courseName = courseName;

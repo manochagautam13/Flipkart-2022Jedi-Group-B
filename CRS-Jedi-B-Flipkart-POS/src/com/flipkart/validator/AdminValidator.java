@@ -28,6 +28,8 @@ public class AdminValidator {
 			}
 		}
 		return true;
+		
+//		courseList.forEach( (x)->{x.getCourseId()==newCourse.getCourseId();});
 	}
 	
 	/**

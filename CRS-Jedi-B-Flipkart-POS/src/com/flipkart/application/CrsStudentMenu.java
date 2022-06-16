@@ -42,8 +42,9 @@ public class CrsStudentMenu {
                         
                         System.out.println("List of Courses Available");
                         System.out.println("CourseId-CourseName");
-                        for(Course c:courses)
-                            System.out.println(c.getCourseId()+"\t-\t"+c.getCourseName());
+                        courses.forEach(System.out::println);
+//                        for(Course c:courses)
+//                            System.out.println(c.getCourseId()+"\t-\t"+c.getCourseName());
                         break;
                     case 3:
                         studentOperations.registerCourses(student.getUserId());
