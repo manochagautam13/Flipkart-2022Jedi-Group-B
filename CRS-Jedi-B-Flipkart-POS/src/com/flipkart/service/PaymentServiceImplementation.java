@@ -59,9 +59,9 @@ public class PaymentServiceImplementation implements PaymentServiceInterface {
         System.out.println("2. " + PaymentConstants.CARD_PAYMENT_STRING);
         Scanner s = new Scanner(System.in);
         int pType = s.nextInt();
-        
+        String paymentId;
         if(pType == 1) {
-            String paymentId = this.getRandomString();
+            paymentId = this.getRandomString();
             pdi.insertIntoPayment(paymentId,PaymentConstants.UPI_STRING);
             System.out.println("Enter UPI Id:");
             String upi = s.next();
@@ -70,7 +70,7 @@ public class PaymentServiceImplementation implements PaymentServiceInterface {
             pdi.insertIntoBookkeeper(paymentId,student.getUserId(),student.getSemester());
         }
         else if(pType == 2) {
-            String paymentId = this.getRandomString();
+            paymentId = this.getRandomString();
             pdi.insertIntoPayment(paymentId,PaymentConstants.CARD_PAYMENT_STRING);
             System.out.println("Enter card-No Id:");
             String upi = s.next();
@@ -86,6 +86,8 @@ public class PaymentServiceImplementation implements PaymentServiceInterface {
         }
         pdi.updateFeeStatus(student.getUserId());
         System.out.println("Payment Successfully done !!");
+        System.out.println("Transaction ID: "+paymentId);
+        
     }
 
     public String getRandomString() {
@@ -100,7 +102,6 @@ public class PaymentServiceImplementation implements PaymentServiceInterface {
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
 
-        System.out.println(generatedString);
         return generatedString;
     }
 }

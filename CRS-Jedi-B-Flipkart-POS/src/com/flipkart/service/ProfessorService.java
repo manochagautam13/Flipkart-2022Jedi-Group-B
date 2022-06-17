@@ -28,7 +28,7 @@ public class ProfessorService implements ProfessorServiceInterface {
         return students;
     }
     public void assignGrades(Professor professor) throws SQLException, IOException {
-        Map<String,ArrayList<String>> courseWithStudents=profOp.viewEnrolledStudentsWithDB(professor);
+        Map<String,ArrayList<String>> courseWithStudents=profOp.viewEnrolledStudentsWithoutGrade(professor);
         
         if (courseWithStudents.size() == 0) {
         	System.out.println("Not Applicable!!");

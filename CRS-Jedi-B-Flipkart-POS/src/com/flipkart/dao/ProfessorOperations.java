@@ -33,6 +33,27 @@ public class ProfessorOperations implements ProfessorUtilsInterface {
         return students;
     }
 
+    public Map<String, ArrayList<String>> viewEnrolledStudentsWithoutGrade(Professor professor) throws SQLException {
+
+        Map<String, ArrayList<String>> students = new LinkedHashMap<>();
+//        
+        Connection conn = DBUtils.getConnection();
+        // String sql = "select registrar.userId,user.userName,course.courseId,course.courseName from registrar,user,course where registrar.courseId in(select courseId from professorreg where professorreg.userId=? ) and registrar.userId=user.userId and registrar.courseId=course.courseId ";
+
+        PreparedStatement statement = conn.prepareStatement(SQLQueriesConstants.VIEW_ENROLLED_WITHOUT_GRADE);
+        statement.setString(1,professor.getProfessorId());
+        ResultSet rs = statement.executeQuery();
+
+        while (rs.next()) {
+            String user = rs.getString(1) + " " + rs.getString(2);
+            String course = rs.getString(3) + " " + rs.getString(4);
+            if (!students.containsKey(course))
+                students.put(course, new ArrayList<>());
+            students.get(course).add(user);
+        }
+        return students;
+    }
+    
     public void provideGrade(int courseId, String studentId, String Grade) throws SQLException {
 //        
         Connection con = DBUtils.getConnection();

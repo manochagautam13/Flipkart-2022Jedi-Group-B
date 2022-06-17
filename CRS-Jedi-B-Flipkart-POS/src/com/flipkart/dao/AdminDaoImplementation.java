@@ -234,7 +234,7 @@ public class AdminDaoImplementation implements AdminDaoInterface{
 	    		}
 	    	}
 	    	
-	    	System.out.println("Student ID\t-\tCourse ID");
+	    	
 	    	
 	    	for (String student : studentList) {
 	    		
@@ -250,6 +250,14 @@ public class AdminDaoImplementation implements AdminDaoInterface{
 	    		}
 	    		
 	    	}
+	    	
+	    	if (studentCourseList.size() == 0) {
+	    		System.out.println("No Pending Requests!!");
+	    		return;
+	    	}
+	    	
+	    	
+	    	System.out.println("Student ID\t-\tCourse ID");
 	    	
 	    	for (pair sc1:studentCourseList)
 	    		System.out.println(sc1.s+"\t-\t"+sc1.c);

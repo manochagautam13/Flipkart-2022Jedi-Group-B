@@ -24,7 +24,7 @@ public class SQLQueriesConstants {
     public static final String CHECK_PAID = "select count(*) from bookkeeper where studentId = ? and semester = ?";
     public static final String COURSES_OF_STUDENT = "select * from registrar where registrar.userId=?";
     public static final String REG_COURSES_OF_STUDENT = "select * from registrar where registered = true and registrar.userId=?";
-    public static final String VIEW_ENROLLED = "select registrar.userId,user.userName,course.courseId,course.courseName from registrar,user,course where registrar.courseId in(select courseId from professorreg where professorreg.userId=? ) and registrar.userId=user.userId and registrar.courseId=course.courseId ";
+    public static final String VIEW_ENROLLED = "select registrar.userId,user.userName,course.courseId,course.courseName from registrar,user,course where registrar.courseId in(select courseId from professorreg where professorreg.userId=? ) and registrar.userId=user.userId and registrar.courseId=course.courseId";
     public static final String PROVIDE_GRADE = "UPDATE registrar set grade=? where userId=? and courseId=?";
     public static final String REGISTERED_COURSES = "INSERT INTO professorreg(userId,courseId) VALUES(?,?)";
     public static final String AVAILABLE_COURSES = "select courseId,courseName from course where courseId not in (select courseId from professorReg)";
@@ -35,4 +35,5 @@ public class SQLQueriesConstants {
     public static final String SELECT_COURSEID = "select courseId from professorreg where courseId = ?";
     public static final String COURSE_DETAILS = "SELECT * FROM course where courseId=?";
 	public static final String VIEW_GRADES = "SELECT * FROM registrar where userId=? and grade between 'A' and 'F'";
+	public static final String VIEW_ENROLLED_WITHOUT_GRADE = "select registrar.userId,user.userName,course.courseId,course.courseName from registrar,user,course where registrar.courseId in(select courseId from professorreg where professorreg.userId=? ) and registrar.userId=user.userId and registrar.courseId=course.courseId and registrar.grade = '0'";
 }
