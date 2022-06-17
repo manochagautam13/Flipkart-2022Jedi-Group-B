@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/CRS-Jedi-B-Flipkart-DropWizard/CRS-Jedi-B-Flipkart-DropWizard.iml" filepath="$PROJECT_DIR$/CRS-Jedi-B-Flipkart-DropWizard/CRS-Jedi-B-Flipkart-DropWizard.iml" />
       <module fileurl="file://$PROJECT_DIR$/Jedi Project.iml" filepath="$PROJECT_DIR$/Jedi Project.iml" />
     </modules>
   </component>
