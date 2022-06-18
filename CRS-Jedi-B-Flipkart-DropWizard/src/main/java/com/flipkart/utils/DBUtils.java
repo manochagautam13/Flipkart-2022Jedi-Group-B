@@ -13,19 +13,19 @@ public class DBUtils {
     public static Connection getConnection() throws SQLException {
         Connection connection = null;
         try {
+            System.out.println("i am here");
             Properties properties = new Properties();
-            InputStream inputStream = DBUtils.class.getClassLoader().getResourceAsStream("./config.properties");
-            properties.load(inputStream);
-            String driver = properties.getProperty("driver");
-            String url = properties.getProperty("url");
-            String username = properties.getProperty("username");
-            String password = properties.getProperty("password");
+            System.out.println("idhar bhi");
+
+            String driver = "com.mysql.cj.jdbc.Driver";
+            String url = "jdbc:mysql://localhost:3306/crs";
+            String username = "root";
+            String password = "Blue_175989";
             Class.forName(driver);
             connection = DriverManager.getConnection(url, username, password);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("connection established");
+        } catch (Exception e) {
+            e.printStackTrace(); System.out.println(("djhgfjshg"));
         }
         return connection;
     }

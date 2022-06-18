@@ -8,7 +8,9 @@ public interface PaymentServiceInterface {
     /*
      * Payfees for given student
      * @param student
+     * @param semester
      * @throws SQLException
      */
-    void payFees(Student student) throws SQLException;
+
+    void payFees(String student, int semester) throws SQLException;
 }

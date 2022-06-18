@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import com.flipkart.bean.Course;
 import com.flipkart.bean.Professor;
-import com.flipkart.bean.Student;
 
 public interface AdminDaoInterface {
     default boolean addProfessor(Professor professor) {
@@ -26,11 +25,7 @@ public interface AdminDaoInterface {
      */
     boolean dropCourse(int courseId);
 
-    /*
-     * approve students from DB using SQL commands
-     * @return
-     */
-    boolean approveStudents();
+
 
     /*
      * validate credentials from DB using SQL commands
@@ -39,11 +34,18 @@ public interface AdminDaoInterface {
      * @return
      */
     boolean validateCredentials(String adminId, String password);
+
+
     /*
-     *
-     * @throws Exception
+     * approve students from DB using SQL commands
+     * @param std
+     * @param course
+     * @return
      */
-    void registerCourse() throws Exception;
+
+    boolean approveStudents(String studentId) throws Exception;
+
+    void registerCourse(String std, int course) throws Exception;
 
     /*
      * pull courses from DB

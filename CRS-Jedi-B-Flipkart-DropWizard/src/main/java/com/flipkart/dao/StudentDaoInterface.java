@@ -16,7 +16,7 @@ public interface StudentDaoInterface
      * @throws SQLException
      * @throws ClassNotFoundException
      */
-    String addStudent() throws SQLException, ClassNotFoundException;
+    boolean addStudent(Student student) throws SQLException, ClassNotFoundException;
 
     /*
      * get student from student id in DB
@@ -58,7 +58,7 @@ public interface StudentDaoInterface
      * @throws SQLException
      * @throws CourseAlreadyRegisteredException
      */
-    void registerCourses(String studentId,ArrayList<Integer> courses) throws SQLException, CourseAlreadyRegisteredException;
+    boolean registerCourses(String studentId,int courses) throws SQLException, CourseAlreadyRegisteredException;
 
 
     /*

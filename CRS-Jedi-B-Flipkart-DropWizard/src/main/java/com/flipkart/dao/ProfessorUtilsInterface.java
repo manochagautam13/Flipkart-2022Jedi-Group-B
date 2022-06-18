@@ -33,7 +33,7 @@ public interface ProfessorUtilsInterface {
      * @throws SQLException
      */
 
-    public void registerCoursesWithDB(Professor professor,Course course) throws SQLException;
+    public boolean registerCoursesWithDB(String professor, int course) throws SQLException;
 
     /*
      * view list of available courses
@@ -41,7 +41,7 @@ public interface ProfessorUtilsInterface {
      * @return list of courses
      * @throws SQLException
      */
-    public ArrayList<Course> viewAvailableCoursesWithDB(Professor professor) throws SQLException ;
+    public ArrayList<Course> viewAvailableCoursesWithDB(String professor) throws SQLException ;
 
     /*
      * view list of students in each course
@@ -49,7 +49,7 @@ public interface ProfessorUtilsInterface {
      * @return list of students mapped to course
      * @throws SQLException
      */
-    public Map<String, ArrayList<String>> viewEnrolledStudentsWithDB(Professor professor) throws SQLException;
+    public Map<String, ArrayList<String>> viewEnrolledStudentsWithDB(String professor) throws SQLException;
 
     /*
      * set grade for given student in given subject
@@ -58,7 +58,7 @@ public interface ProfessorUtilsInterface {
      * @param Grade
      * @throws SQLException
      */
-    public void provideGrade(int courseId,String studentId,String Grade) throws SQLException;
+    public boolean provideGrade(int courseId, String studentId, String Grade) throws SQLException;
 
 
 }

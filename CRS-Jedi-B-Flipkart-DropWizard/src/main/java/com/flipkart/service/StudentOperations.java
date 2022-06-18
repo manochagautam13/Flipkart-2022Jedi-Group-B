@@ -8,7 +8,6 @@ import com.flipkart.utils.DBUtils;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 class pair {
 	String course;
@@ -60,10 +59,10 @@ public class StudentOperations implements StudentInterface {
     }
 
     @Override
-    public void registerCourses(String studentID) throws SQLException,CourseAlreadyRegisteredException{
-        Scanner sc=new Scanner(System.in);
+    public boolean registerCourses(String studentID, int course) throws SQLException,CourseAlreadyRegisteredException{
+
         System.out.println("The courses are: ");
-        
+
         Connection connection = DBUtils.getConnection();
 
         String sql = "select course.courseId,course.courseName, professorreg.userId"
@@ -86,7 +85,7 @@ public class StudentOperations implements StudentInterface {
         
         if (courses.size() == 0) {
         	System.out.println("No Courses Available!!");
-        	return;
+            return false;
         }
         System.out.println("Register for the courses");
 
@@ -107,24 +106,14 @@ public class StudentOperations implements StudentInterface {
         	myCourses = rs.getInt(1);
         }
         
-        if(myCourses>=6)
+        if(myCourses>=6) {
             System.out.println("You have reached your limit of max choices");
-        else {
+            return false;
 
-            System.out.println("Enter number of courses you want to register : ");
-            int count = sc.nextInt();
-            
-            while(count+myCourses>6) {
-                System.out.println("You can register for max 6 choices");
-                System.out.println("Enter number of courses you want to register : ");
-                count = sc.nextInt();
-            }
-            ArrayList<Integer> selectedCourse = new ArrayList<Integer>();
-            for (int i = 0; i < count; i++) {
-                selectedCourse.add(sc.nextInt());
-            }
-            studentDaoImplementation.registerCourses(studentID, selectedCourse);
+
         }
+        return studentDaoImplementation.registerCourses(studentID, course);
+
     }
 
     @Override

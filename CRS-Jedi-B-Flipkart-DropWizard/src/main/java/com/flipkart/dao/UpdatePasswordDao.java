@@ -1,6 +1,6 @@
 package com.flipkart.dao;
 
-import com.flipkart.application.CrsApplication;
+
 import com.flipkart.bean.Student;
 import com.flipkart.constants.SQLQueriesConstants;
 import com.flipkart.exception.OldPasswordNotValidException;

@@ -2,17 +2,15 @@ package com.flipkart.dao;
 
 import com.flipkart.bean.Course;
 import com.flipkart.bean.Professor;
-import com.flipkart.bean.Student;
 import com.flipkart.constants.SQLQueriesConstants;
 import com.flipkart.utils.*;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class ProfessorOperations implements ProfessorUtilsInterface {
-    public Map<String, ArrayList<String>> viewEnrolledStudentsWithDB(Professor professor) throws SQLException {
+    public Map<String, ArrayList<String>> viewEnrolledStudentsWithDB(String professor) throws SQLException {
 
         Map<String, ArrayList<String>> students = new LinkedHashMap<>();
 //        
@@ -20,7 +18,7 @@ public class ProfessorOperations implements ProfessorUtilsInterface {
         // String sql = "select registrar.userId,user.userName,course.courseId,course.courseName from registrar,user,course where registrar.courseId in(select courseId from professorreg where professorreg.userId=? ) and registrar.userId=user.userId and registrar.courseId=course.courseId ";
 
         PreparedStatement statement = conn.prepareStatement(SQLQueriesConstants.VIEW_ENROLLED);
-        statement.setString(1,professor.getProfessorId());
+        statement.setString(1,professor);
         ResultSet rs = statement.executeQuery();
 
         while (rs.next()) {
@@ -33,7 +31,7 @@ public class ProfessorOperations implements ProfessorUtilsInterface {
         return students;
     }
 
-    public Map<String, ArrayList<String>> viewEnrolledStudentsWithoutGrade(Professor professor) throws SQLException {
+    public Map<String, ArrayList<String>> viewEnrolledStudentsWithoutGrade(String professorId) throws SQLException {
 
         Map<String, ArrayList<String>> students = new LinkedHashMap<>();
 //        
@@ -41,7 +39,7 @@ public class ProfessorOperations implements ProfessorUtilsInterface {
         // String sql = "select registrar.userId,user.userName,course.courseId,course.courseName from registrar,user,course where registrar.courseId in(select courseId from professorreg where professorreg.userId=? ) and registrar.userId=user.userId and registrar.courseId=course.courseId ";
 
         PreparedStatement statement = conn.prepareStatement(SQLQueriesConstants.VIEW_ENROLLED_WITHOUT_GRADE);
-        statement.setString(1,professor.getProfessorId());
+        statement.setString(1,professorId);
         ResultSet rs = statement.executeQuery();
 
         while (rs.next()) {
@@ -54,7 +52,7 @@ public class ProfessorOperations implements ProfessorUtilsInterface {
         return students;
     }
     
-    public void provideGrade(int courseId, String studentId, String Grade) throws SQLException {
+    public boolean provideGrade(int courseId, String studentId, String Grade) throws SQLException {
 //        
         Connection con = DBUtils.getConnection();
         // String SQL = "UPDATE registrar set grade=? where userId=? and courseId=?";
@@ -70,28 +68,25 @@ public class ProfessorOperations implements ProfessorUtilsInterface {
             int affectedRows = pstmt.executeUpdate();
             // check the affected rows
             if (affectedRows > 0) {
+                return true;
                 // get the ID back
-                try (ResultSet rs = pstmt.getGeneratedKeys()) {
-                    if (rs.next()) {
-                        id = rs.getLong(1);
-                    }
-                } catch (SQLException ex) {
-                    System.out.println(ex.getMessage());
-                }
+
             }
             else
             {
                 System.out.println("Enter correct ids! Grades not added");
+                return false;
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
+            return false;
         }
 
     }
 
 
 
-    public void registerCoursesWithDB(Professor professor, Course course) throws SQLException {
+    public boolean registerCoursesWithDB(String professor, int course) throws SQLException {
         ArrayList<Course> courses = new ArrayList<Course>();
 //        
         Connection con = DBUtils.getConnection();
@@ -104,29 +99,24 @@ public class ProfessorOperations implements ProfessorUtilsInterface {
                         Statement.RETURN_GENERATED_KEYS)) {
 
 
-            pstmt.setString(1, professor.getProfessorId());
-            pstmt.setString(2, String.valueOf(course.getCourseId()));
+            pstmt.setString(1, professor);
+            pstmt.setString(2, String.valueOf(course));
 
 
             int affectedRows = pstmt.executeUpdate();
             // check the affected rows
             if (affectedRows > 0) {
                 // get the ID back
-                try (ResultSet rs = pstmt.getGeneratedKeys()) {
-                    if (rs.next()) {
-                        id = rs.getLong(1);
-                    }
-                } catch (SQLException ex) {
-                    System.out.println(ex.getMessage());
-                }
+                return true;
+
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-
+        return false;
     }
 
-    public ArrayList<Course> viewAvailableCoursesWithDB(Professor professor) throws SQLException {
+    public ArrayList<Course> viewAvailableCoursesWithDB(String professor) throws SQLException {
         ArrayList<Course> courses = new ArrayList<Course>();
 //        
         Connection con = DBUtils.getConnection();

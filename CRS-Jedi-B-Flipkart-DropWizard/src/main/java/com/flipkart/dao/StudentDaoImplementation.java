@@ -1,6 +1,5 @@
 package com.flipkart.dao;
 
-import com.flipkart.application.CrsApplication;
 import com.flipkart.bean.Course;
 import com.flipkart.bean.GradeCard;
 import com.flipkart.bean.Student;
@@ -17,24 +16,23 @@ public class StudentDaoImplementation implements StudentDaoInterface {
 
 //    final org.apache.log4j.Logger logger = Logger.getLogger(StudentDaoImplementation.class);
     @Override
-    public String addStudent() throws SQLException {
+    public boolean addStudent(Student student) throws SQLException {
         Connection connection = DBUtils.getConnection();
         if(connection==null)System.out.println("connection not established");
 
         Statement stmt = connection.createStatement();
-        Scanner sc=new Scanner(System.in);
-        System.out.println("Enter userId:");
-        String userId=sc.next();
-        System.out.println("Enter password:");
-        String password= sc.next();
-        System.out.println("Enter userName:");
-        String studentName= sc.next();
-        System.out.println("Enter emaiId:");
-        String emaiId= sc.next();
-        System.out.println("Enter contactNo:");
-        String contactNo= sc.next();
-        System.out.println("Enter semester:");
-        int semester=sc.nextInt();
+
+        String userId=student.getUserId();
+
+        String password= student.getPassword();
+
+        String studentName= student.getUserName();
+
+        String emaiId= student.getEmailId();
+
+        String contactNo= student.getContactNo();
+
+        int semester=student.getSemester();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(SQLQueriesConstants.ADD_USER_QUERY);
             preparedStatement.setString(1, userId);
@@ -56,12 +54,13 @@ public class StudentDaoImplementation implements StudentDaoInterface {
             if (rowsAffected1 == 1 && rows == 1) {
                 System.out.println("Student is registered");
             }
+            return true;
         }
         catch(SQLException e)
         {
-//            logger.info("Student with the ID exists. Try Again!!");
+            System.out.println(e.getMessage());
         }
-        return null;
+        return false;
     }
 
     @Override
@@ -77,7 +76,7 @@ public class StudentDaoImplementation implements StudentDaoInterface {
         ResultSet rs1 = statement1.executeQuery();
         while(rs.next()&& rs1.next())
         {
-            Student student=new Student(studentId,rs1.getString(3),rs1.getString(4), rs1.getString(2),rs1.getString(5),studentId,rs.getInt(2),rs.getString(3),rs.getString(4), rs.getBoolean(5));
+            Student student=new Student(studentId,rs1.getString(3),rs1.getString(4), rs1.getString(2),rs1.getString(5),rs.getInt(2),rs.getString(3),rs.getString(4), rs.getBoolean(5));
             return student;
         }
         return null;
@@ -159,18 +158,17 @@ public class StudentDaoImplementation implements StudentDaoInterface {
     }
 
     @Override
-    public void registerCourses(String studentId, ArrayList<Integer> courses) throws SQLException,CourseAlreadyRegisteredException {
+    public boolean registerCourses(String studentId, int course) throws SQLException,CourseAlreadyRegisteredException {
         Connection connection = DBUtils.getConnection();
         Statement stmt = connection.createStatement();
         try{
-            for(Integer course:courses) {
+
             	
             	PreparedStatement preparedStatement1 = connection.prepareStatement(SQLQueriesConstants.SELECT_COURSEID);
                 preparedStatement1.setInt(1, course);
             	ResultSet flag = preparedStatement1.executeQuery();
             	if (flag.next() == false) {
-            		System.out.println(course);
-            		continue;
+            		return false;
             	}
 //            	System.out.println("hksjhahf");
             	
@@ -181,12 +179,13 @@ public class StudentDaoImplementation implements StudentDaoInterface {
                 preparedStatement.setString(3, "0");
                 preparedStatement.setBoolean(4, false);
                 preparedStatement.executeUpdate();
-            }
+                return true;
         }
         catch (Exception e){
         	System.out.println(e);
 //            throw new CourseAlreadyRegisteredException();
         }
+        return false;
 
     }
 

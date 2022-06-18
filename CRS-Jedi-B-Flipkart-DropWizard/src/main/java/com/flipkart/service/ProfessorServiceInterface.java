@@ -31,7 +31,7 @@ public interface ProfessorServiceInterface {
      * @throws SQLException
      * @throws IOException
      */
-    public void registerCourses(Professor professor) throws SQLException, IOException;
+    public boolean registerCourses(String professor, int course) throws SQLException, IOException;
 
     /*
      * view enrolled students
@@ -39,7 +39,7 @@ public interface ProfessorServiceInterface {
      * @return list of students mapped to course
      * @throws SQLException
      */
-    public Map<String, ArrayList<String>> viewEnrolledStudents(Professor professor) throws SQLException;
+    public Map<String, ArrayList<String>> viewEnrolledStudents(String professor) throws SQLException;
 
     /*
      * assign grades
@@ -47,7 +47,7 @@ public interface ProfessorServiceInterface {
      * @throws SQLException
      * @throws IOException
      */
-    public void assignGrades(Professor professor) throws SQLException, IOException;
+    public boolean assignGrades(String professor, int course, String student, String grade) throws SQLException, IOException;
 
 
 }

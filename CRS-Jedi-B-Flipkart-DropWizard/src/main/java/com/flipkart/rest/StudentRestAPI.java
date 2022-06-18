@@ -1,11 +1,13 @@
 package com.flipkart.rest;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.flipkart.bean.*;
+import com.flipkart.dao.*;
 import com.flipkart.service.*;
 
 import java.sql.SQLException;
@@ -17,23 +19,12 @@ import java.util.Map;
 public class StudentRestAPI {
 	 StudentInterface studentInterface= new StudentOperations();
 	 StudentDaoInterface studentDaoInterface= new StudentDaoImplementation();
-	 double fee;
-	 int invoiceId;
 	 
-	 @GET
-	 @Path("/viewDetails")
-	 @Consumes("application/json")
-	 Public Response getStudent(@Valid Student student) throws SQLException {
-         StudentDaoInterface sdi = new StudentDaoImplementation();
-     if (student != null)
-         return Response.ok(student).build();
-     else
-         return Response.status(Response.Status.NOT_FOUND).build();
- }
+
 	 @GET
 	 @Path("/viewCourses")
-	 @Produces(MediaType.Application)
-	 Public Response viewAvailableCourses() {
+	 @Produces(MediaType.APPLICATION_JSON)
+	 public Response viewAvailableCourses() {
 		 ArrayList<Course> availableCourses = null;
 	        try {
 	            availableCourses = studentDaoInterface.viewCourses();
@@ -46,9 +37,10 @@ public class StudentRestAPI {
 
 	 @POST
 	 @Path("/registerCourses")
-	 Public Response registerCourses(@Valid Student student) {
+	 @Consumes(MediaType.APPLICATION_JSON)
+	 public Response registerCourses(@QueryParam("student")@NotNull String student,@QueryParam("course")@NotNull int course) {
 		 try {
-		 studentInterface.registerCourses(student.getUserId());
+		 studentInterface.registerCourses(student,course);
 		 }
 		 catch(Exception E)
 		 {
@@ -59,9 +51,10 @@ public class StudentRestAPI {
 	 
 	 @GET
 	 @Path("/viewGradeCard")
-	 Public Response viewGradeCard(@Valid Student student) {
+	 @Consumes(MediaType.APPLICATION_JSON)
+	 public Response viewGradeCard(@QueryParam("student")@NotNull String student) {
 		 try {
-		 studentInterface.registerCourses(student.getUserId());
+		 studentInterface.viewGradeCard(student);
 		 }
 		 catch(Exception E)
 		 {
@@ -72,10 +65,11 @@ public class StudentRestAPI {
 	 
 	 @PUT
 	 @Path("/payFees")
-	 Public Response payFees(@Valid Student student) {
+	 @Consumes(MediaType.APPLICATION_JSON)
+	 public Response payFees(@QueryParam("student")@NotNull String student, @QueryParam("semester")@NotNull int semester) {
 		 try {
 			 PaymentServiceInterface psi = new PaymentServiceImplementation();
-			 psi.payFees(student);
+			 psi.payFees(student, semester);
 		 }
 		 catch(Exception E)
 		 {
@@ -86,9 +80,10 @@ public class StudentRestAPI {
 	 
 	 @GET
 	 @Path("/feeStatus")
-	 Public Response getFeeStatus(@Valid Student student) {
+	 @Consumes(MediaType.APPLICATION_JSON)
+	 public Response getFeeStatus(@QueryParam("student")@NotNull String student) {
 		 try {
-			 studentDaoInterface.getfeeStatus(student.getUserId());
+			 studentDaoInterface.getfeeStatus(student);
 			 
 		 }
 		 catch(Exception E){
@@ -99,10 +94,11 @@ public class StudentRestAPI {
 	 
 	 @GET
 	 @Path("/getRegisteredCourseList")
-	 Public Response getRegisteredCourseList(@Valid Student student) {
+	 @Consumes(MediaType.APPLICATION_JSON)
+	 public Response getRegisteredCourseList(@QueryParam("student")@NotNull String student) {
 		 try {
 			 System.out.println("You are registered for following Courses: ");
-			 studentInterface.registeredCourseList(student.getUserId());
+			 studentInterface.registeredCourseList(student);
 		 }
 		 catch(Exception E){
 			 return Response.status(201).entity("Some Exception Occured !! check logs").build();
@@ -111,7 +107,7 @@ public class StudentRestAPI {
 	 }
 	 
 	 @Path("/exit")
-	 @Consumes("/application/json")
+	 @Consumes(MediaType.APPLICATION_JSON)
 	 public Response Exit(){
 		 try {
 	            System.out.println("Exit");

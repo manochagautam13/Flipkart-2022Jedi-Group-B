@@ -1,11 +1,9 @@
 package com.flipkart.service;
 
-import com.flipkart.bean.Student;
 import com.flipkart.constants.PaymentConstants;
 import com.flipkart.constants.SQLQueriesConstants;
 import com.flipkart.dao.PaymentDaoImplementation;
 import com.flipkart.dao.PaymentDaoInterface;
-import com.flipkart.service.PaymentServiceInterface;
 import com.flipkart.utils.DBUtils;
 
 import java.sql.Connection;
@@ -17,12 +15,12 @@ import java.util.Scanner;
 
 public class PaymentServiceImplementation implements PaymentServiceInterface {
     @Override
-    public void payFees(Student student) throws SQLException {
+    public void payFees(String student, int semester) throws SQLException {
 
         // String sql="select * from registrar where registrar.userId=?";
         Connection conn = DBUtils.getConnection();
         PreparedStatement statement = conn.prepareStatement(SQLQueriesConstants.COURSES_OF_STUDENT);
-        statement.setString(1,student.getUserId());
+        statement.setString(1,student);
         ResultSet rs = statement.executeQuery();
         int count = 0;
         while(rs.next()) count++;
@@ -35,7 +33,7 @@ public class PaymentServiceImplementation implements PaymentServiceInterface {
         // String sql1="select * from registrar where registered = true and registrar.userId=?";
         Connection conn1 = DBUtils.getConnection();
         PreparedStatement statement1 = conn1.prepareStatement(SQLQueriesConstants.REG_COURSES_OF_STUDENT);
-        statement1.setString(1,student.getUserId());
+        statement1.setString(1,student);
         ResultSet rs1 = statement1.executeQuery();
         int count1 = 0;
         while(rs1.next()) count1++;
@@ -47,7 +45,7 @@ public class PaymentServiceImplementation implements PaymentServiceInterface {
         
         PaymentDaoInterface pdi = new PaymentDaoImplementation();
         
-        boolean checkPaid = pdi.checkPaid(student.getUserId(),student.getSemester());
+        boolean checkPaid = pdi.checkPaid(student,semester);
         if (checkPaid) {
         	System.out.println("Already Paid!!");
         	return;
@@ -67,7 +65,7 @@ public class PaymentServiceImplementation implements PaymentServiceInterface {
             String upi = s.next();
             System.out.println("Enter Pin");
             upi = s.next();
-            pdi.insertIntoBookkeeper(paymentId,student.getUserId(),student.getSemester());
+            pdi.insertIntoBookkeeper(paymentId,student,semester);
         }
         else if(pType == 2) {
             paymentId = this.getRandomString();
@@ -78,13 +76,13 @@ public class PaymentServiceImplementation implements PaymentServiceInterface {
             upi = s.next();
             System.out.println("Enter Pin");
             upi = s.next();
-            pdi.insertIntoBookkeeper(paymentId,student.getUserId(),student.getSemester());
+            pdi.insertIntoBookkeeper(paymentId,student,semester);
         }
         else {
             System.out.println("Incorrect/suspicious operation !!");
             return;
         }
-        pdi.updateFeeStatus(student.getUserId());
+        pdi.updateFeeStatus(student);
         System.out.println("Payment Successfully done !!");
         System.out.println("Transaction ID: "+paymentId);
         

@@ -1,9 +1,7 @@
 package com.flipkart.dao;
 
-import com.flipkart.bean.Admin;
 import com.flipkart.bean.Course;
 import com.flipkart.bean.Professor;
-import com.flipkart.bean.Student;
 import com.flipkart.constants.SQLQueriesConstants;
 import com.flipkart.utils.DBUtils;
 //import org.apache.log4j.Logger;
@@ -133,51 +131,7 @@ public class AdminDaoImplementation implements AdminDaoInterface{
         return ok;
     }
 
-    @Override
-    public boolean approveStudents() {
-        boolean ok = true;
-        try{
-            Connection con = DBUtils.getConnection();
-            Statement stmt = con.createStatement();
-            if(con==null)System.out.println("connection not established");
-            Scanner in= new Scanner(System.in);
-            int ch =1;
-            while(ch!=0) {
-                String sql = "select * from student where isApproved=0";
-                ResultSet rs = stmt.executeQuery(sql);
-                int flag=0;
-                System.out.println("Here is a list of all pending students ++++++++++++");
-                while (rs.next()) {
-                    String sId = rs.getString(1);
-                    System.out.println(rs.getString(1));
-                    flag=1;
-//                String s = "select * from user where userId = " +sId;
-//                Statement st = con.createStatement();
-//                ResultSet r = st.executeQuery(s);
-//                System.out.println(r.getString(3)+ " " +r.getString(4));
-                }
-                if(flag==1) {
-                    System.out.println("Enter student id");
-                    String id = in.next();
-                    // String sql1 = "UPDATE student SET isApproved = 1 where studentId = ?";
-                    PreparedStatement statement = con.prepareStatement(SQLQueriesConstants.APPROVE_STUDENT);
-                    statement.setString(1,id);
-                    statement.executeUpdate();
-                    //statement.executeQuery(sql);
-                }
-                else{
-                    System.out.println("<<<<<<< No student left to be approved >>>>>>>>>>>");
-                }
-                System.out.println("To exit, press 0 : To continue, press 1");
-                ch = in.nextInt();
-            }
-        } catch (SQLException e) {
-            ok = false;
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-        }
-        return ok;
-    }
+
 
     public boolean isApproved(String studentId) throws Exception{
         Connection con = DBUtils.getConnection();
@@ -190,16 +144,17 @@ public class AdminDaoImplementation implements AdminDaoInterface{
         }
         return false;
     }
-    public void approveStudents(String studentId) throws Exception {
+    @Override
+    public boolean approveStudents(String studentId) throws Exception {
             String id = studentId;
             // String sql1 = "UPDATE student SET isApproved = 1 where studentId = ?";
             Connection con = DBUtils.getConnection();
             PreparedStatement statement = con.prepareStatement(SQLQueriesConstants.APPROVE_STUDENT);
             statement.setString(1,id);
-            statement.executeUpdate();
+            return (statement.executeUpdate()!=0);
     }
-
-    public void registerCourse() throws Exception{
+    @Override
+    public void registerCourse(String std, int course) throws Exception{
     	
     	Scanner sc = new Scanner(System.in);
     	
@@ -208,102 +163,91 @@ public class AdminDaoImplementation implements AdminDaoInterface{
     	
     	int flag = 0;
     	
-    	while(flag == 0) {
-	    	ArrayList<String> studentList = new ArrayList<String>();
-	    	ArrayList<pair> studentCourseList = new ArrayList<pair>();
-	    	
-	    	Connection con = DBUtils.getConnection();
-	    	
-	    	// String getStudents = "select distinct userId from registrar where registered = false";
-	    	PreparedStatement stmt1 = con.prepareStatement(SQLQueriesConstants.GET_STUDENTS);
-	    	
-	    	ResultSet rs = stmt1.executeQuery();
-	    	
-	    	while(rs.next()) {
-	    		studentId = rs.getString(1);
-	    		
-	    		// String checkCourses = "select count(*) from registrar where registered = true and userId = ?";
-	    		stmt1 = con.prepareStatement(SQLQueriesConstants.CHECK_COURSES);
-	    		stmt1.setString(1, studentId);
-	    		
-	    		ResultSet count = stmt1.executeQuery();
-	    		if (count.next()) {
-	    			if (count.getInt(1) < 4) {
-	    				studentList.add(studentId);
-	    			}
-	    		}
-	    	}
-	    	
-	    	
-	    	
-	    	for (String student : studentList) {
-	    		
-	    		// String getCourseStudent = "select courseId, userId from registrar where registered = false and userId = ?";
-	    		
-	    		stmt1 = con.prepareStatement(SQLQueriesConstants.GET_COURSES_STUDENT);
-	    		stmt1.setString(1, student);
-	    		
-	    		rs = stmt1.executeQuery();
-	    		
-	    		while(rs.next()) {
-	    			studentCourseList.add(new pair(rs.getString(2),rs.getInt(1)));
-	    		}
-	    		
-	    	}
-	    	
-	    	if (studentCourseList.size() == 0) {
-	    		System.out.println("No Pending Requests!!");
-	    		return;
-	    	}
-	    	
-	    	
-	    	System.out.println("Student ID\t-\tCourse ID");
-	    	
-	    	for (pair sc1:studentCourseList)
-	    		System.out.println(sc1.s+"\t-\t"+sc1.c);
-	    	
-	    	System.out.println("++++++++++++++++++++++++++++++++++++++++");
-	    	System.out.println("Enter Student ID:");
-	    	
-	    	studentId = sc.next();
-	    	
-	    	System.out.println("Enter Course ID:");
-	    	
-	    	courseId = sc.nextInt();
-	    	
-	    	System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++");
-	    	
-	    	
-	    	
-	    	flag = 0;
-	    	
-	    	for(pair scl:studentCourseList) {
-	    		
+
+        ArrayList<String> studentList = new ArrayList<String>();
+        ArrayList<pair> studentCourseList = new ArrayList<pair>();
+
+        Connection con = DBUtils.getConnection();
+
+        // String getStudents = "select distinct userId from registrar where registered = false";
+        PreparedStatement stmt1 = con.prepareStatement(SQLQueriesConstants.GET_STUDENTS);
+
+        ResultSet rs = stmt1.executeQuery();
+
+        while(rs.next()) {
+            studentId = rs.getString(1);
+
+            // String checkCourses = "select count(*) from registrar where registered = true and userId = ?";
+            stmt1 = con.prepareStatement(SQLQueriesConstants.CHECK_COURSES);
+            stmt1.setString(1, studentId);
+
+            ResultSet count = stmt1.executeQuery();
+            if (count.next()) {
+                if (count.getInt(1) < 4) {
+                    studentList.add(studentId);
+                }
+            }
+        }
+
+
+
+        for (String student : studentList) {
+
+            // String getCourseStudent = "select courseId, userId from registrar where registered = false and userId = ?";
+
+            stmt1 = con.prepareStatement(SQLQueriesConstants.GET_COURSES_STUDENT);
+            stmt1.setString(1, student);
+
+            rs = stmt1.executeQuery();
+
+            while(rs.next()) {
+                studentCourseList.add(new pair(rs.getString(2),rs.getInt(1)));
+            }
+
+        }
+
+        if (studentCourseList.size() == 0) {
+            System.out.println("No Pending Requests!!");
+            return;
+        }
+
+
+        System.out.println("Student ID\t-\tCourse ID");
+
+        for (pair sc1:studentCourseList)
+            System.out.println(sc1.s+"\t-\t"+sc1.c);
+
+        System.out.println("++++++++++++++++++++++++++++++++++++++++");
+
+
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++");
+
+
+
+        flag = 0;
+
+        for(pair scl:studentCourseList) {
+
 //	    		System.out.println(scl.s+" "+studentId+" "+scl.c+" "+courseId);
-	    		
-	    		if (scl.s.equals(studentId) && scl.c == courseId) {
-		    		// String sql = "update registrar set registered = true where courseId = ? and userId = ?;";
-		        	
-		        	PreparedStatement stmt = con.prepareStatement(SQLQueriesConstants.REGISTER_STUDENT_TO_COURSE);
-		        	stmt.setString(2, studentId);
-		        	stmt.setInt(1, courseId);
-		        	stmt.executeUpdate();
-		        	
-		        	System.out.println("Student Registered!");
-		        	flag = 1;
-		        	break;
-	    		}
-	    	} 
-    		
-	    	if (flag == 0)System.out.println("Please Enter Student Id and Course Id from list displayed only!!");
-	    	
-	    	
-	    	System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++");
-	    	System.out.println("enter 0 to continue; 1 to quit!!");
-	    	
-	    	flag = sc.nextInt();
-    	}
-    	
+
+            if (scl.s.equals(std) && scl.c == course) {
+                // String sql = "update registrar set registered = true where courseId = ? and userId = ?;";
+
+                PreparedStatement stmt = con.prepareStatement(SQLQueriesConstants.REGISTER_STUDENT_TO_COURSE);
+                stmt.setString(2, std);
+                stmt.setInt(1, course);
+                stmt.executeUpdate();
+
+                System.out.println("Student Registered!");
+                flag = 1;
+                break;
+            }
+        }
+
+
+
+
+
     }
 //
 //    @Override

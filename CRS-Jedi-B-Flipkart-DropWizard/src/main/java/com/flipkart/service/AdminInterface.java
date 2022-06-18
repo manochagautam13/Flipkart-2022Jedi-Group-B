@@ -24,18 +24,11 @@ public interface AdminInterface {
      */
     public void dropCourse(int courseId);
 
-    /*
-     * Approve students
-     * @param professor
-     * @return status as success or fail
-     */
-    public boolean approveStudents();
 
-    /*
-     * Register course
-     * @throws CourseAlreadyRegistered Exception
-     */
-    public void registerCourse() throws Exception;
+    boolean approveStudents(String studentId) throws Exception;
+
+
+    void registerCourse(String studentId, int courseId) throws Exception;
 
     /*
      * Show courses

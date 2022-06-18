@@ -65,9 +65,10 @@ public class AdminOperation implements AdminInterface {
     }
 
     @Override
-    public boolean approveStudents() {
+    public boolean approveStudents(String studentId) throws Exception {
         AdminDaoInterface admin = AdminDaoImplementation.getInstance();
-        boolean ok = admin.approveStudents();
+        System.out.println("here also");
+        boolean ok = admin.approveStudents(studentId);
         if(ok) {
             System.out.println("");
             System.out.println("+++++++++++++++++++++++");
@@ -80,11 +81,11 @@ public class AdminOperation implements AdminInterface {
     }
     
     @Override
-    public void registerCourse() throws Exception {
+    public void registerCourse(String studentId, int courseId) throws Exception {
     	try {
     		
 	    		AdminDaoInterface admin = AdminDaoImplementation.getInstance();
-	    		admin.registerCourse();
+	    		admin.registerCourse(studentId,courseId);
     	} catch(Exception e) {
     		System.out.println(e);
     	}

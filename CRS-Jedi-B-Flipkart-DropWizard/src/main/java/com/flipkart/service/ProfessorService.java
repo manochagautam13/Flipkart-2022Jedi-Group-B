@@ -3,8 +3,6 @@ package com.flipkart.service;
 import com.flipkart.bean.Course;
 import com.flipkart.bean.Professor;
 import com.flipkart.dao.ProfessorOperations;
-import com.flipkart.dao.ProfessorUtilsInterface;
-import com.flipkart.service.ProfessorServiceInterface;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,16 +22,16 @@ public class ProfessorService implements ProfessorServiceInterface {
     public ArrayList<Course> viewAllCourses() throws SQLException{
         return profOp.viewCoursesWithDB();
     }
-    public Map<String, ArrayList<String>> viewEnrolledStudents(Professor professor) throws SQLException {
+    public Map<String, ArrayList<String>> viewEnrolledStudents(String professor) throws SQLException {
         Map<String,ArrayList<String>> students=profOp.viewEnrolledStudentsWithDB(professor);
         return students;
     }
-    public void assignGrades(Professor professor) throws SQLException, IOException {
-        Map<String,ArrayList<String>> courseWithStudents=profOp.viewEnrolledStudentsWithoutGrade(professor);
+    public boolean assignGrades(String professorId, int course, String student, String grade) throws SQLException, IOException {
+        Map<String,ArrayList<String>> courseWithStudents=profOp.viewEnrolledStudentsWithoutGrade(professorId);
         
         if (courseWithStudents.size() == 0) {
         	System.out.println("Not Applicable!!");
-        	return;
+        	return false;
         }
         System.out.println("Make a report card for a student");
         System.out.println("Enter the Course Index and Students index ");
@@ -41,19 +39,19 @@ public class ProfessorService implements ProfessorServiceInterface {
         for(String CourseName:courseWithStudents.keySet()){
             System.out.println(courseindex+". "+"("+CourseName+")");
             int studentsIndex=1;
-            for(String student:courseWithStudents.get(CourseName)){
-                System.out.println("\t"+studentsIndex+". ("+student+")");
+            for(String std:courseWithStudents.get(CourseName)){
+                System.out.println("\t"+studentsIndex+". ("+std+")");
                 studentsIndex++;
             }
             courseindex++;
         }
-        System.out.println("Pick course Id");
-        int courseChoice=Integer.parseInt(br.readLine());
-        System.out.println("Pick student Id");
-        String studentChoice=br.readLine();
-        System.out.println("Enter the grade between (A-F)");
-        String Grade=br.readLine();
-        profOp.provideGrade(courseChoice,studentChoice,Grade);
+
+        int courseChoice=course;
+
+        String studentChoice=student;
+
+        String Grade=grade;
+        return profOp.provideGrade(course,student,grade);
 
 
 
@@ -61,15 +59,15 @@ public class ProfessorService implements ProfessorServiceInterface {
 
 
 
-    public void registerCourses(Professor professor) throws SQLException, IOException {
+    public boolean registerCourses(String professor, int course) throws SQLException, IOException {
     	
     	
     	
-    	while(true) {
+
     		ArrayList<Course> courses=profOp.viewAvailableCoursesWithDB(professor);
     		if (courses.size() == 0) {
             	System.out.println("No Courses To Register!!");
-            	return;
+            	return false;
             }
 //            int index=1;
 //            for (Course c : courses) {
@@ -79,21 +77,14 @@ public class ProfessorService implements ProfessorServiceInterface {
             
             IntStream.range(0, courses.size()).forEach(index->System.out.println((index+1)+".\t"+courses.get(index)));
             
-            System.out.println("Register for the courses");
-            System.out.println("---Enter the Index which you want to register(Enter 0 to exit)");
-            System.out.println("Index." +"CourseName-CourseId");
 
-            int choice=Integer.parseInt(br.readLine());
-            if(choice==0){
-                break;
-            }
-            else{
-                if((choice-1)<courses.size())
-                profOp.registerCoursesWithDB(professor,courses.get(choice-1));
-                else
-                    System.out.println("Enter Correct index number");
-            }
-        }
+
+            int choice=course;
+
+
+            return profOp.registerCoursesWithDB(professor,course);
+
+
     }
 
 }
